@@ -1,21 +1,28 @@
-const Tasks = require('./tasks')
+const Tasks = require('./BL/TaskController')
 
 module.exports = app => {
 
-    app.get('/task', (req, res) =>
-        res.send(Tasks.read())
+    app.get('/task', async (req, res) =>
+        res.send(await Tasks.read())
     )
 
-    app.post('/task', (req, res) =>
-        res.send(Tasks.create(req.body))
+    app.post('/task', async (req, res) => {
+        try {
+            res.send(await Tasks.create(req.body))
+        } catch (error) {
+            res.send({
+                code: 400,
+                message: error.message || error
+            })
+        }
+    })
+
+    app.put('/task/:id', async (req, res) =>
+        res.send(await Tasks.update(req.params.id))
     )
 
-    app.put('/task/:id', (req, res) =>
-        res.send(Tasks.update(req.params.id))
-    )
-
-    app.delete('/task/:id', (req, res) =>
-        res.send(Tasks.delete(req.params.id))
+    app.delete('/task/:id', async (req, res) =>
+        res.send(await Tasks.delete(req.params.id))
     )
 
 }
