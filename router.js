@@ -18,7 +18,7 @@ module.exports = app => {
     })
 
     app.put('/task/:id', async (req, res) =>
-        res.send(await Tasks.update(req.params.id))
+        res.send(await Tasks.update(req.params.id, req.body))
     )
 
     app.delete('/task/:id', async (req, res) =>
